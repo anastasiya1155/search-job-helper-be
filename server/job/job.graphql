@@ -3,12 +3,32 @@ type Job {
     name: String!
     position: String
     source: String
+    link: String
+    team: String
+    projectAge: Int
+    remoteOption: Boolean
+    fullyRemote: Boolean
+    laptopProvided: Boolean
+    stack: String
+    officeAddress: String
+    additionalBonuses: String
+    comments: String
 }
 
 input JobInput {
     name: String
     position: String
     source: String
+    link: String
+    team: String
+    projectAge: Int
+    remoteOption: Boolean
+    fullyRemote: Boolean
+    laptopProvided: Boolean
+    stack: String
+    officeAddress: String
+    additionalBonuses: String
+    comments: String
 }
 
 type JobMutations {
