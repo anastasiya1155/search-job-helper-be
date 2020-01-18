@@ -19,3 +19,4 @@ tags
 
 # Other
 /.env
+/config/config.json

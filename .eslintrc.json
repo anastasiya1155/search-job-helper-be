@@ -2,10 +2,12 @@
     "env": {
         "browser": true,
         "commonjs": true,
-        "es6": true
+        "es6": true,
+        "jest/globals": true
     },
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "plugin:jest/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -14,7 +16,10 @@
     "parserOptions": {
         "ecmaVersion": 2018
     },
+    "plugins": ["jest"],
     "rules": {
-        "no-console": 0
+        "global-require": 0,
+        "no-console": 0,
+        "no-return-await": 0
     }
 }

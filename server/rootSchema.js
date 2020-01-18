@@ -1,34 +1,15 @@
-const { gql } = require('apollo-server');
+const merge = require('lodash/merge');
+const job = require('./job');
 
-const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
-
-  type Query {
-    books: [Book]
-  }
-`;
-
-const books = [
-  {
-    title: 'Harry Potter and the Chamber of Secrets',
-    author: 'J.K. Rowling',
-  },
-  {
-    title: 'Jurassic Park',
-    author: 'Michael Crichton',
-  },
-];
-
-const resolvers = {
-  Query: {
-    books: () => books,
-  },
-};
 
 module.exports = {
-  typeDefs,
-  resolvers,
+  typeDefs: [
+    job.typeDefs,
+  ].join(' '),
+  resolvers: merge({}, job.resolvers),
+  context: {
+    models: {
+      job: job.model,
+    },
+  },
 };
