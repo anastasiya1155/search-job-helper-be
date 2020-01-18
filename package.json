@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon ./server/index.js",
-    "test": "NODE_ENV=testing jest --forceExit --runInBand"
+    "test": "NODE_ENV=testing jest --forceExit --runInBand --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
