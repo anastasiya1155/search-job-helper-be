@@ -1,4 +1,6 @@
+require('dotenv').config();
 const { ApolloServer, gql } = require('apollo-server');
+const sequelize = require('./database/connection');
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -46,4 +48,12 @@ const server = new ApolloServer({ typeDefs, resolvers });
 // The `listen` method launches a web server.
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+      console.error('Unable to connect to the database:', err);
+    });
 });

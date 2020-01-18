@@ -1,0 +1,21 @@
+# System files
+**.swp
+*.sw*
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Editor files
+/.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+tags
+
+# Log files
+*.log
+
+# Other
+/.env
