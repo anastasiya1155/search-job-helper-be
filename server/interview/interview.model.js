@@ -2,8 +2,16 @@ const Sequelize = require('sequelize');
 const sequelize = require('../database/connection');
 
 const InterviewModel = sequelize.define('interview', {
-  date: {
+  startTime: {
     type: Sequelize.DATE,
+    field: 'start_time',
+  },
+  endTime: {
+    type: Sequelize.DATE,
+    field: 'end_time',
+  },
+  location: {
+    type: Sequelize.STRING,
   },
   jobId: {
     type: Sequelize.INTEGER,

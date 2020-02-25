@@ -6,8 +6,16 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    date: {
+    startTime: {
       type: Sequelize.DATE,
+      field: 'start_time',
+    },
+    endTime: {
+      type: Sequelize.DATE,
+      field: 'end_time',
+    },
+    location: {
+      type: Sequelize.STRING,
     },
     jobId: {
       type: Sequelize.INTEGER,

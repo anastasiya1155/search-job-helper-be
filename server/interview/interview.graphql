@@ -1,6 +1,8 @@
 type Interview {
   id: ID!
-  date: String @date(format: "YYYY-MM-DD HH:mm")
+  startTime: String @date(format: "YYYY-MM-DD HH:mm")
+  endTime: String @date(format: "YYYY-MM-DD HH:mm")
+  location: String
   jobId: ID
   job: Job
   type: String
@@ -8,7 +10,9 @@ type Interview {
 }
 
 input InterviewInput {
-  date: String
+  startTime: String
+  duration: Float
+  location: String
   type: String
   jobId: ID
   comments: String
