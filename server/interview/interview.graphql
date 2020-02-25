@@ -11,7 +11,7 @@ type Interview {
 
 input InterviewInput {
   startTime: String
-  duration: Float
+  endTime: String
   location: String
   type: String
   jobId: ID
