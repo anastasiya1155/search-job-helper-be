@@ -1,0 +1,10 @@
+directive @date(format: String = "YYYY-MM-DD") on FIELD_DEFINITION
+
+type Query {
+  # A placeholder, please ignore
+  placeholder: Int
+}
+type Mutation {
+  # A placeholder, please ignore
+  placeholder: Int
+}

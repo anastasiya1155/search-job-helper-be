@@ -1,38 +1,12 @@
-const Sequelize = require('sequelize');
-const Job = require('../../job/job.model');
-
-const models = {
-  job: Job,
-};
+const models = require('../../database/models');
 
 const cleanDB = async (done) => {
-  await models.job.truncate();
+  await models.interview.destroy({ where: {} });
+  await models.job.destroy({ where: {} });
   done();
-};
-
-let sequelize;
-
-const connectToDB = () => {
-  sequelize = new Sequelize({
-    host: process.env.DB_HOST,
-    dialect: 'postgres',
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: 'sjh-test',
-  });
-};
-
-const disconnectDB = async (done = () => {}) => {
-  if (sequelize) {
-    sequelize.close().then(done);
-  } else {
-    done();
-  }
 };
 
 module.exports = {
   cleanDB,
-  connectToDB,
-  disconnectDB,
   models,
 };

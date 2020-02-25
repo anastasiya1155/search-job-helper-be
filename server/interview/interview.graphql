@@ -1,0 +1,30 @@
+type Interview {
+  id: ID!
+  date: String @date(format: "YYYY-MM-DD HH:mm")
+  jobId: ID
+  job: Job
+  type: String
+  comments: String
+}
+
+input InterviewInput {
+  date: String
+  type: String
+  jobId: ID
+  comments: String
+}
+
+type InterviewMutations {
+  edit(input: InterviewInput): Interview
+  remove: [Interview]
+}
+
+extend type Query {
+  getAllInterviews: [Interview]
+  getInterviewById(id: ID!): Interview
+}
+
+extend type Mutation {
+  createInterview(input: InterviewInput): Interview
+  interview(id: ID!): InterviewMutations
+}

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 
+console.log(process.env.DB_DATABASE);
 module.exports = new Sequelize({
   host: process.env.DB_HOST,
   dialect: 'postgres',

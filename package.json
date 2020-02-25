@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon ./server/index.js",
-    "test": "NODE_ENV=testing jest --forceExit --runInBand --detectOpenHandles"
+    "test": "NODE_ENV=testing DB_DATABASE=sjh-test jest --forceExit --runInBand --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "graphql-tools": "^4.0.6",
     "jest": "^24.9.0",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "pg": "^7.17.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.3",

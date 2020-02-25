@@ -3,9 +3,8 @@ const db = require('../utils/testUtils/db');
 const { runQuery } = require('../utils/testUtils/run');
 const jobResolvers = require('./job.resolvers');
 
-describe('Project', () => {
-  beforeAll(db.connectToDB);
-  afterAll(db.disconnectDB);
+describe('Job', () => {
+  beforeAll(db.cleanDB);
   afterEach(db.cleanDB);
 
   describe('resolvers', () => {

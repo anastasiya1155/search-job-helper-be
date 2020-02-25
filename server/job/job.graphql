@@ -36,12 +36,12 @@ type JobMutations {
     remove: [Job]
 }
 
-type Query {
+extend type Query {
     getAllJobs: [Job]
     getJobById(id: ID!): Job
 }
 
-type Mutation {
+extend type Mutation {
     createJob(input: JobInput): Job
     job(id: ID!): JobMutations
 }
