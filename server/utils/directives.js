@@ -15,7 +15,6 @@ class DateFormatterDirective extends SchemaDirectiveVisitor {
       if (!result) {
         return result;
       }
-      console.log(argsFormat, format);
       return moment(result).format(argsFormat || format);
     };
   }
