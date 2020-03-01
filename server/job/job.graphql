@@ -15,6 +15,11 @@ type Job {
     comments: String
     interested: Int
     active: Boolean
+    salaryAsk: Int
+    salaryOffer: Int
+    timeToOffice: Int
+    offer: Boolean
+    testTask: String
 }
 
 input JobInput {
@@ -33,6 +38,11 @@ input JobInput {
     comments: String
     interested: Int
     active: Boolean
+    salaryAsk: Int
+    salaryOffer: Int
+    timeToOffice: Int
+    offer: Boolean
+    testTask: String
 }
 
 type JobMutations {

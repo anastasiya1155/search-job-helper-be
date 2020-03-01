@@ -54,6 +54,26 @@ const JobModel = sequelize.define('job', {
     type: Sequelize.BOOLEAN,
     defaultValue: true,
   },
+  salaryAsk: {
+    type: Sequelize.INTEGER,
+    field: 'salary_ask',
+  },
+  salaryOffer: {
+    type: Sequelize.INTEGER,
+    field: 'salary_offer',
+  },
+  timeToOffice: {
+    type: Sequelize.INTEGER,
+    field: 'time_to_office',
+  },
+  offer: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+  },
+  testTask: {
+    type: Sequelize.STRING,
+    field: 'test_task',
+  },
 }, {
   underscored: true,
 });
