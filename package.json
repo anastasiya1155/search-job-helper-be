@@ -5,6 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon ./server/index.js",
+    "migrate": "sequelize db:migrate --env production",
     "test": "NODE_ENV=testing DB_DATABASE=sjh-test jest --forceExit --runInBand --detectOpenHandles"
   },
   "keywords": [],

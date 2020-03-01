@@ -13,6 +13,8 @@ type Job {
     officeAddress: String
     additionalBonuses: String
     comments: String
+    interested: Int
+    active: Boolean
 }
 
 input JobInput {
@@ -29,6 +31,8 @@ input JobInput {
     officeAddress: String
     additionalBonuses: String
     comments: String
+    interested: Int
+    active: Boolean
 }
 
 type JobMutations {

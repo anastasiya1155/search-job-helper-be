@@ -21,6 +21,8 @@ module.exports = {
       type: Sequelize.INTEGER,
       field: 'job_id',
       references: { model: 'jobs', key: 'id' },
+      onDelete: 'set null',
+      onUpdate: 'cascade',
     },
     type: {
       type: Sequelize.STRING,

@@ -7,7 +7,7 @@ module.exports = {
     },
   },
   Query: {
-    getAllJobs: async (parent, args, ctx) => await ctx.models.job.findAll(),
+    getAllJobs: async (parent, args, ctx) => await ctx.models.job.findAll({ order: [['active', 'desc'], ['id', 'desc']] }),
     getJobById: async (parent, { id }, ctx) => await ctx.models.job.findByPk(id),
   },
   Mutation: {

@@ -47,6 +47,13 @@ const JobModel = sequelize.define('job', {
   comments: {
     type: Sequelize.TEXT,
   },
+  interested: {
+    type: Sequelize.INTEGER,
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
+  },
 }, {
   underscored: true,
 });
