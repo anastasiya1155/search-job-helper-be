@@ -1,0 +1,26 @@
+type Note {
+  id: ID
+  title: String
+  text: String
+  frequency: Int
+}
+
+input NoteInput {
+  title: String
+  text: String
+  frequency: Int
+}
+
+type NoteMutations {
+  edit(input: NoteInput): Note
+  remove: [Note]
+}
+
+extend type Query {
+  getAllNotes: [Note]
+}
+
+extend type Mutation {
+  createNote(input: NoteInput): Note
+  note(id: ID!): NoteMutations
+}
