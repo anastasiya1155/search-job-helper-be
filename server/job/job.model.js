@@ -74,6 +74,10 @@ const JobModel = sequelize.define('job', {
     type: Sequelize.STRING,
     field: 'test_task',
   },
+  interviewsCount: {
+    type: Sequelize.INTEGER,
+    field: 'interviews',
+  },
 }, {
   underscored: true,
 });

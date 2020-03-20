@@ -19,12 +19,20 @@ describe('Job', () => {
 
       test('should have correct query', async () => {
         const job = await db.models.job.create({ name: 'test' });
+        const interviews = [
+          { startTime: '2020-02-25 12:00', type: 'tech', jobId: job.id },
+          { startTime: '2020-02-26 13:00', type: 'owner', jobId: job.id },
+        ];
+        await db.models.interview.bulkCreate(interviews);
         const input = { id: job.id };
         const query = `
           query getJobById($id: ID!){
             getJobById(id: $id) {
               id
               name
+              interviews {
+                id
+              }
             }
           }
         `;
@@ -32,6 +40,7 @@ describe('Job', () => {
 
         expect(errors).toBeUndefined();
         expect(data.getJobById.id).toBe(`${job.id}`);
+        expect(data.getJobById.interviews.length).toBe(interviews.length);
       });
     });
     describe('job mutations', () => {

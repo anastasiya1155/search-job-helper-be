@@ -20,6 +20,8 @@ type Job {
     timeToOffice: Int
     offer: Boolean
     testTask: String
+    interviewsCount: Int
+    interviews: [Interview]
 }
 
 input JobInput {
@@ -43,6 +45,7 @@ input JobInput {
     timeToOffice: Int
     offer: Boolean
     testTask: String
+    interviewsCount: Int
 }
 
 type JobMutations {

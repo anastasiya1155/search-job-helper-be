@@ -1,4 +1,9 @@
 module.exports = {
+  Job: {
+    interviews: async (parent, args, ctx) => await ctx.models.interview.findAll({
+      where: { jobId: parent.id },
+    }),
+  },
   JobMutations: {
     edit: async (parent, { input }) => await parent.update(input),
     remove: async (parent, args, ctx) => {
@@ -7,7 +12,9 @@ module.exports = {
     },
   },
   Query: {
-    getAllJobs: async (parent, args, ctx) => await ctx.models.job.findAll({ order: [['active', 'desc'], ['id', 'desc']] }),
+    getAllJobs: async (parent, args, ctx) => await ctx.models.job.findAll({
+      order: [['active', 'desc'], ['offer', 'desc'], ['id', 'desc']],
+    }),
     getJobById: async (parent, { id }, ctx) => await ctx.models.job.findByPk(id),
   },
   Mutation: {
