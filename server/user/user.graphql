@@ -1,0 +1,20 @@
+type User {
+  id: ID
+  email: String
+}
+
+input UserInput {
+  email: String
+  password: String
+}
+
+type UserMutations {
+  edit(input: UserInput): User
+  remove: [User]
+}
+
+extend type Mutation {
+  createUser(input: UserInput): User
+  user(id: ID!): UserMutations
+  login(email: String!, password: String!): User
+}

@@ -1,8 +1,8 @@
-const Job = require('../job/job.model');
+const { AuthenticationError } = require('apollo-server');
 
 module.exports = {
   Interview: {
-    job: async (parent) => await Job.findByPk(parent.jobId),
+    job: async (parent, args, ctx) => await ctx.models.job.findByPk(parent.jobId),
   },
   InterviewMutations: {
     edit: async (parent, { input }) => await parent.update(input),
@@ -12,11 +12,21 @@ module.exports = {
     },
   },
   Query: {
-    getAllInterviews: async (parent, args, ctx) => await ctx.models.interview.findAll(),
-    getInterviewById: async (parent, { id }, ctx) => await ctx.models.interview.findByPk(id),
+    getAllInterviews: async (parent, args, ctx) => await ctx.models.interview.findAll({
+      include: [{ model: ctx.models.job, where: { userId: ctx.user.id } }],
+    }),
+    getInterviewById: async (parent, { id }, ctx) => await ctx.models.interview.findByPk(id, {
+      include: [{ model: ctx.models.job, where: { userId: ctx.user.id } }],
+    }),
   },
   Mutation: {
     createInterview: async (parent, { input }, ctx) => await ctx.models.interview.create(input),
-    interview: async (parent, { id }, ctx) => await ctx.models.interview.findByPk(id),
+    interview: async (parent, { id }, ctx) => {
+      const interview = await ctx.models.interview.findByPk(id, { include: [ctx.models.job] });
+      if (interview.job.userId === ctx.user.id) {
+        return interview;
+      }
+      throw new AuthenticationError('Access denied');
+    },
   },
 };

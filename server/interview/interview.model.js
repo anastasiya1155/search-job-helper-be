@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../database/connection');
+const Job = require('../job/job.model');
 
 const InterviewModel = sequelize.define('interview', {
   startTime: {
@@ -29,5 +30,7 @@ const InterviewModel = sequelize.define('interview', {
 }, {
   underscored: true,
 });
+
+InterviewModel.belongsTo(Job);
 
 module.exports = InterviewModel;

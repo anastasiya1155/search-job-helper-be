@@ -11,6 +11,10 @@ const NoteModel = sequelize.define('note', {
   frequency: {
     type: Sequelize.INTEGER,
   },
+  userId: {
+    type: Sequelize.INTEGER,
+    field: 'user_id',
+  },
 }, {
   underscored: true,
 });

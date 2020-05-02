@@ -78,6 +78,10 @@ const JobModel = sequelize.define('job', {
     type: Sequelize.INTEGER,
     field: 'interviews',
   },
+  userId: {
+    type: Sequelize.INTEGER,
+    field: 'user_id',
+  },
 }, {
   underscored: true,
 });
