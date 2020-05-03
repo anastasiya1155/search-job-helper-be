@@ -9,6 +9,10 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
+    const allowedRoutes = ['login', 'register'];
+    if (allowedRoutes.includes(req.body.operationName)) {
+      return context;
+    }
     const token = req.headers.authorization || '';
     const jwtResp = getUser(token);
 

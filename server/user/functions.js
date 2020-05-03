@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { AuthenticationError } = require('apollo-server');
 
 const generateToken = (user) => jwt.sign({ user: user.id }, process.env.PASSPORT_SECRET, {
   expiresIn: '365 days',
@@ -16,14 +17,12 @@ const validatePassword = async (password1, password2) => await bcrypt.compare(pa
 const getUser = (token) => {
   try {
     if (token) {
-      console.log('token provided', token);
       return jwt.verify(token.replace(/^JWT\s/, ''), process.env.PASSPORT_SECRET);
     }
-    console.log('no token');
-    return null;
+    throw new AuthenticationError('No token provided');
   } catch (e) {
     console.log('e:', e);
-    return null;
+    throw new AuthenticationError(e);
   }
 };
 
