@@ -13,8 +13,13 @@ type UserMutations {
   remove: [User]
 }
 
+type LoginResponse {
+  token: String
+  user: User
+}
+
 extend type Mutation {
   createUser(input: UserInput): User
   user(id: ID!): UserMutations
-  login(email: String!, password: String!): User
+  login(email: String!, password: String!): LoginResponse
 }

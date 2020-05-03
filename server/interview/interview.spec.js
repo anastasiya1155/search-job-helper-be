@@ -5,16 +5,18 @@ const { runQuery } = require('../utils/testUtils/run');
 const interviewResolvers = require('./interview.resolvers');
 
 let testJob;
-let user;
-let user2;
+let userId;
+let userId2;
 let jobId;
 let jobId2;
 
 describe('Interview', () => {
   beforeAll(db.cleanDB);
   beforeEach(async () => {
-    user = await db.models.user.create({ email: 'example@mail.com', password: 'pass' });
-    user2 = await db.models.user.create({ email: 'em@il.com', password: 'pass2' });
+    const user = await db.models.user.create({ email: 'example@mail.com', password: 'pass' });
+    const user2 = await db.models.user.create({ email: 'em@il.com', password: 'pass2' });
+    userId = user.id;
+    userId2 = user2.id;
     testJob = { name: 'testJob', userId: user.id };
     const j = await db.models.job.create(testJob);
     const j2 = await db.models.job.create({ name: 'testJob', userId: user2.id });
@@ -28,7 +30,7 @@ describe('Interview', () => {
       test('should resolve correctly', async () => {
         const interview = await db.models.interview.create({ startTime: '2020-02-25 12:00', type: 'tech', jobId });
         const result = await interviewResolvers.Query
-          .getAllInterviews(null, {}, { models: db.models, user });
+          .getAllInterviews(null, {}, { models: db.models, userId });
 
         expect(result[0].id).toBe(interview.id);
       });
@@ -37,7 +39,7 @@ describe('Interview', () => {
         const myInterview = await db.models.interview.create({ startTime: '2020-02-25 12:00', type: 'tech', jobId });
         await db.models.interview.create({ startTime: '2020-02-25 12:00', type: 'tech', jobId: jobId2 });
         const result = await interviewResolvers.Query
-          .getAllInterviews(null, {}, { models: db.models, user });
+          .getAllInterviews(null, {}, { models: db.models, userId });
 
         expect(result).toHaveLength(1);
         expect(result[0].id).toBe(myInterview.id);
@@ -61,7 +63,7 @@ describe('Interview', () => {
             }
           }
         `;
-        const { data, errors } = await runQuery(query, input, { user }, { user });
+        const { data, errors } = await runQuery(query, input, { userId });
 
         expect(errors).toBeUndefined();
         expect(data.getInterviewById.id).toBe(`${interview.id}`);
@@ -74,7 +76,7 @@ describe('Interview', () => {
         const result = await interviewResolvers.Mutation.createInterview(
           null,
           input,
-          { models: db.models, user },
+          { models: db.models, userId },
         );
 
         expect(moment(result.startTime).isSame(input.input.startTime, 'minute')).toBe(true);
@@ -92,7 +94,7 @@ describe('Interview', () => {
             }
           }
         `;
-        const { data, errors } = await runQuery(query, input, { user });
+        const { data, errors } = await runQuery(query, input, { userId });
 
         expect(errors).toBeUndefined();
         expect(data.interview.edit.comments).toBe(input.input.comments);
@@ -111,7 +113,7 @@ describe('Interview', () => {
             }
           }
         `;
-        const { errors } = await runQuery(query, input, { user });
+        const { errors } = await runQuery(query, input, { userId });
 
         expect(errors).toHaveLength(1);
         expect(errors[0].message).toBe('Access denied');
@@ -125,12 +127,12 @@ describe('Interview', () => {
         const interviews = await interviewResolvers.Query.getAllInterviews(
           null,
           {},
-          { models: db.models, user },
+          { models: db.models, userId },
         );
         const result = await interviewResolvers.InterviewMutations.remove(
           interviews[0],
           {},
-          { models: db.models, user },
+          { models: db.models, userId },
         );
 
         expect(result.length).toBe(interviews.length - 1);
@@ -147,7 +149,7 @@ describe('Interview', () => {
             }
           }
         `;
-        const { errors } = await runQuery(query, { id: interview.id }, { user });
+        const { errors } = await runQuery(query, { id: interview.id }, { userId });
 
         expect(errors).toHaveLength(1);
         expect(errors[0].message).toBe('Access denied');

@@ -4,16 +4,18 @@ const { runQuery } = require('../utils/testUtils/run');
 const noteResolvers = require('./note.resolvers');
 
 let noteInput;
-let user;
-let user2;
+let userId;
+let userId2;
 
 describe('Note', () => {
   beforeAll(db.cleanDB);
   beforeEach(async () => {
-    user = await db.models.user.create({ email: 'example@mail.com', password: 'pass' });
-    user2 = await db.models.user.create({ email: 'em@il.com', password: 'pass2' });
+    const user = await db.models.user.create({ email: 'example@mail.com', password: 'pass' });
+    const user2 = await db.models.user.create({ email: 'em@il.com', password: 'pass2' });
+    userId = user.id;
+    userId2 = user2.id;
     noteInput = {
-      title: 'test', text: 'supter test', frequency: 90, userId: user.id,
+      title: 'test', text: 'supter test', frequency: 90, userId,
     };
   });
   afterEach(db.cleanDB);
@@ -23,16 +25,16 @@ describe('Note', () => {
       test('should resolve correctly', async () => {
         const note = await db.models.note.create(noteInput);
         const result = await noteResolvers.Query
-          .getAllNotes(null, {}, { models: db.models, user });
+          .getAllNotes(null, {}, { models: db.models, userId });
 
         expect(result[0].id).toBe(note.id);
       });
 
       test('should return only my notes', async () => {
         const myNote = await db.models.note.create(noteInput);
-        await db.models.note.create({ ...noteInput, userId: user2.id });
+        await db.models.note.create({ ...noteInput, userId: userId2 });
         const result = await noteResolvers.Query
-          .getAllNotes(null, {}, { models: db.models, user });
+          .getAllNotes(null, {}, { models: db.models, userId });
 
         expect(result).toHaveLength(1);
         expect(result[0].id).toBe(myNote.id);
@@ -51,7 +53,7 @@ describe('Note', () => {
             }
           }
         `;
-        const { data, errors } = await runQuery(query, input, { user });
+        const { data, errors } = await runQuery(query, input, { userId });
 
         expect(errors).toBeUndefined();
         expect(data.getAllNotes[0].id).toBe(`${note.id}`);
@@ -63,11 +65,11 @@ describe('Note', () => {
         const result = await noteResolvers.Mutation.createNote(
           null,
           input,
-          { models: db.models, user },
+          { models: db.models, userId },
         );
 
         expect(result.name).toBe(input.input.name);
-        expect(result.userId).toBe(user.id);
+        expect(result.userId).toBe(userId);
       });
       test('should edit note', async () => {
         const note = await db.models.note.create(noteInput);
@@ -84,14 +86,14 @@ describe('Note', () => {
             }
           }
         `;
-        const { data, errors } = await runQuery(query, input, { user });
+        const { data, errors } = await runQuery(query, input, { userId });
 
         expect(errors).toBeUndefined();
         expect(data.note.edit.text).toBe(input.input.text);
       });
 
       test('should not allow editing not my note', async () => {
-        const note = await db.models.note.create({ ...noteInput, userId: user2.id });
+        const note = await db.models.note.create({ ...noteInput, userId: userId2 });
         const input = { id: note.id, input: { text: 'some text' } };
         const query = `
           mutation editNote($id: ID!, $input: NoteInput!){
@@ -105,7 +107,7 @@ describe('Note', () => {
             }
           }
         `;
-        const { errors } = await runQuery(query, input, { user });
+        const { errors } = await runQuery(query, input, { userId });
 
         expect(errors).toHaveLength(1);
         expect(errors[0].message).toBe('Access denied');
@@ -116,18 +118,22 @@ describe('Note', () => {
           { ...noteInput },
           { ...noteInput, title: 'test2' },
         ]);
-        const notes = await noteResolvers.Query.getAllNotes(null, {}, { models: db.models, user });
+        const notes = await noteResolvers.Query.getAllNotes(
+          null,
+          {},
+          { models: db.models, userId },
+        );
         const result = await noteResolvers.NoteMutations.remove(
           notes[0],
           {},
-          { models: db.models, user },
+          { models: db.models, userId },
         );
 
         expect(result.length).toBe(notes.length - 1);
       });
 
       test('should not allow deleting not my note', async () => {
-        const note = await db.models.note.create({ ...noteInput, userId: user2.id });
+        const note = await db.models.note.create({ ...noteInput, userId: userId2 });
         const query = `
           mutation removeNote($id: ID!){
             note(id: $id) {
@@ -137,7 +143,7 @@ describe('Note', () => {
             }
           }
         `;
-        const { errors } = await runQuery(query, { id: note.id }, { user });
+        const { errors } = await runQuery(query, { id: note.id }, { userId });
 
         expect(errors).toHaveLength(1);
         expect(errors[0].message).toBe('Access denied');

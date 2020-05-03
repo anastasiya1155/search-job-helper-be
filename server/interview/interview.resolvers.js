@@ -13,17 +13,17 @@ module.exports = {
   },
   Query: {
     getAllInterviews: async (parent, args, ctx) => await ctx.models.interview.findAll({
-      include: [{ model: ctx.models.job, where: { userId: ctx.user.id } }],
+      include: [{ model: ctx.models.job, where: { userId: ctx.userId } }],
     }),
     getInterviewById: async (parent, { id }, ctx) => await ctx.models.interview.findByPk(id, {
-      include: [{ model: ctx.models.job, where: { userId: ctx.user.id } }],
+      include: [{ model: ctx.models.job, where: { userId: ctx.userId } }],
     }),
   },
   Mutation: {
     createInterview: async (parent, { input }, ctx) => await ctx.models.interview.create(input),
     interview: async (parent, { id }, ctx) => {
       const interview = await ctx.models.interview.findByPk(id, { include: [ctx.models.job] });
-      if (interview.job.userId === ctx.user.id) {
+      if (interview.job.userId === ctx.userId) {
         return interview;
       }
       throw new AuthenticationError('Access denied');

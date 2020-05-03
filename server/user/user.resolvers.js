@@ -14,8 +14,8 @@ module.exports = {
           where: { email: email.trim().toLocaleLowerCase() },
         });
         if (await validatePassword(password, user.password)) {
-          await loginUserToCtx(user, ctx);
-          return user;
+          const token = await loginUserToCtx(user, ctx);
+          return { token, user };
         }
         throw new Error('Invalid password');
       } catch (err) {

@@ -10,17 +10,17 @@ module.exports = {
   },
   Query: {
     getAllNotes: async (parent, args, ctx) => await ctx.models.note.findAll({
-      where: { userId: ctx.user.id },
+      where: { userId: ctx.userId },
       order: [['id', 'desc']],
     }),
   },
   Mutation: {
     createNote: async (parent, { input }, ctx) => await ctx.models.note.create({
-      ...input, userId: ctx.user.id,
+      ...input, userId: ctx.userId,
     }),
     note: async (parent, { id }, ctx) => {
       const note = await ctx.models.note.findByPk(id);
-      if (note.userId === ctx.user.id) {
+      if (note.userId === ctx.userId) {
         return note;
       }
       throw new AuthenticationError('Access denied');

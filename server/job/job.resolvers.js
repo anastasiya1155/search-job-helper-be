@@ -11,19 +11,19 @@ module.exports = {
     remove: async (parent, args, ctx) => {
       await parent.destroy();
       return await ctx.models.job.findAll({
-        where: { userId: ctx.user.id },
+        where: { userId: ctx.userId },
         order: [['active', 'desc'], ['offer', 'desc'], ['id', 'desc']],
       });
     },
   },
   Query: {
     getAllJobs: async (parent, args, ctx) => await ctx.models.job.findAll({
-      where: { userId: ctx.user.id },
+      where: { userId: ctx.userId },
       order: [['active', 'desc'], ['offer', 'desc'], ['id', 'desc']],
     }),
     getJobById: async (parent, { id }, ctx) => {
       const job = await ctx.models.job.findByPk(id);
-      if (job.userId === ctx.user.id) {
+      if (job.userId === ctx.userId) {
         return job;
       }
       throw new AuthenticationError('Access denied');
@@ -31,11 +31,11 @@ module.exports = {
   },
   Mutation: {
     createJob: async (parent, { input }, ctx) => await ctx.models.job.create({
-      ...input, userId: ctx.user.id,
+      ...input, userId: ctx.userId,
     }),
     job: async (parent, { id }, ctx) => {
       const job = await ctx.models.job.findByPk(id);
-      if (job.userId === ctx.user.id) {
+      if (job.userId === ctx.userId) {
         return job;
       }
       throw new AuthenticationError('Access denied');
