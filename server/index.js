@@ -1,11 +1,23 @@
 require('dotenv').config();
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server-express');
+const express = require('express');
+const fs = require('fs');
+const https = require('https');
+const http = require('http');
 const {
   typeDefs, resolvers, context, schemaDirectives,
 } = require('./rootSchema');
 const { getUser } = require('./user/functions');
 
-const server = new ApolloServer({
+const configurations = {
+  production: { ssl: true, port: 40443 },
+  development: { ssl: false, port: 4000 },
+};
+
+const environment = process.env.NODE_ENV || 'production';
+const config = configurations[environment];
+
+const apollo = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
@@ -21,6 +33,22 @@ const server = new ApolloServer({
   schemaDirectives,
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+const app = express();
+apollo.applyMiddleware({ app });
+
+let server;
+if (config.ssl) {
+  server = https.createServer(
+    {
+      key: fs.readFileSync('./private.key'),
+      cert: fs.readFileSync('./certificate.crt'),
+    },
+    app,
+  );
+} else {
+  server = http.createServer(app);
+}
+
+server.listen({ port: config.port }, () => console.log(
+  `🚀 Server ready at port ${config.port}`,
+));
