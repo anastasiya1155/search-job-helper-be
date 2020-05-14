@@ -1,3 +1,4 @@
+const { ApolloError } = require('apollo-server');
 const { loginUserToCtx, validatePassword } = require('./functions');
 
 module.exports = {
@@ -13,13 +14,16 @@ module.exports = {
         const user = await ctx.models.user.findOne({
           where: { email: email.trim().toLocaleLowerCase() },
         });
+        if (!user) {
+          throw new ApolloError('User not registered');
+        }
         if (await validatePassword(password, user.password)) {
           const token = await loginUserToCtx(user, ctx);
           return { token, user };
         }
-        throw new Error('Invalid password');
+        throw new ApolloError('Invalid password');
       } catch (err) {
-        throw new Error(err);
+        throw new ApolloError(err);
       }
     },
   },
