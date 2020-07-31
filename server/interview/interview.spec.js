@@ -6,7 +6,6 @@ const interviewResolvers = require('./interview.resolvers');
 
 let testJob;
 let userId;
-let userId2;
 let jobId;
 let jobId2;
 
@@ -16,7 +15,6 @@ describe('Interview', () => {
     const user = await db.models.user.create({ email: 'example@mail.com', password: 'pass' });
     const user2 = await db.models.user.create({ email: 'em@il.com', password: 'pass2' });
     userId = user.id;
-    userId2 = user2.id;
     testJob = { name: 'testJob', userId: user.id };
     const j = await db.models.job.create(testJob);
     const j2 = await db.models.job.create({ name: 'testJob', userId: user2.id });
