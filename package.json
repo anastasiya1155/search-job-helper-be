@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "start": "NODE_ENV=development DB_HOST=localhost nodemon ./server/index.js",
-    "lint": "eslint src",
+    "lint": "eslint server",
     "migrate": "sequelize db:migrate --env production",
     "test": "NODE_ENV=testing DB_DATABASE=sjh-test jest --forceExit --runInBand --detectOpenHandles"
   },
