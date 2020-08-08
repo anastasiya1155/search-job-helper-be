@@ -21,7 +21,7 @@ const apollo = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
-    const allowedRoutes = ['login', 'register'];
+    const allowedRoutes = ['login', 'register', 'IntrospectionQuery'];
     if (allowedRoutes.includes(req.body.operationName)) {
       return context;
     }

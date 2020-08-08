@@ -2,9 +2,12 @@
   "name": "job-search-helper",
   "version": "1.0.0",
   "description": "",
-  "main": "server/index.js",
+  "main": "server/index.ts",
   "scripts": {
-    "start": "NODE_ENV=development DB_HOST=localhost nodemon ./server/index.js",
+    "start": "node --inspect=5858 -r ts-node/register ./server/index.ts",
+    "start:watch": "nodemon",
+    "build": "tsc",
+    "start:old": "NODE_ENV=development DB_HOST=localhost nodemon server/index.ts",
     "lint": "eslint server",
     "migrate": "sequelize db:migrate --env production",
     "test": "NODE_ENV=testing DB_DATABASE=sjh-test jest --forceExit --runInBand --detectOpenHandles"
@@ -32,10 +35,26 @@
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {
+    "@types/node": "^14.0.27",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^23.6.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "server"
+    ],
+    "exec": "npm start",
+    "ext": "*"
   }
 }
