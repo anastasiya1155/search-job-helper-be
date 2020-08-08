@@ -1,5 +1,5 @@
 const { ApolloError } = require('apollo-server');
-const { loginUserToCtx, validatePassword } = require('./functions');
+const { loginUserToCtx, validatePassword } = require('./functions.ts');
 
 module.exports = {
   UserMutations: {
@@ -11,6 +11,7 @@ module.exports = {
     user: async (parent, { id }, ctx) => await ctx.models.user.findByPk(id),
     login: async (parent, { email, password }, ctx) => {
       try {
+        console.log(ctx.models.user);
         const user = await ctx.models.user.findOne({
           where: { email: email.trim().toLocaleLowerCase() },
         });

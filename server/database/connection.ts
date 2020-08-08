@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const {Sequelize} = require('sequelize');
 
 console.log(
   process.env.DB_DATABASE,
@@ -6,7 +6,8 @@ console.log(
   process.env.DB_USERNAME,
   process.env.DB_PASSWORD,
 );
-module.exports = new Sequelize({
+
+export default new Sequelize({
   host: process.env.DB_HOST,
   dialect: 'postgres',
   username: process.env.DB_USERNAME,

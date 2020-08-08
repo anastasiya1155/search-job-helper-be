@@ -14,12 +14,12 @@ const loginUserToCtx = async (user, ctx) => {
 
 const validatePassword = async (password1, password2) => await bcrypt.compare(password1, password2);
 
-const getUser = (token) => {
-  try {
-    if (token) {
-      return jwt.verify(token.replace(/^JWT\s/, ''), process.env.PASSPORT_SECRET);
-    }
+const getUser = (token: string) => {
+  if (!token) {
     throw new AuthenticationError('No token provided');
+  }
+  try {
+    return jwt.verify(token.replace(/^JWT\s/, ''), process.env.PASSPORT_SECRET);
   } catch (e) {
     console.log('e:', e);
     throw new AuthenticationError(e);

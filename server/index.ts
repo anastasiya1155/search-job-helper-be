@@ -1,3 +1,4 @@
+export {};
 require('dotenv').config();
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
@@ -6,8 +7,8 @@ const https = require('https');
 const http = require('http');
 const {
   typeDefs, resolvers, context, schemaDirectives,
-} = require('./rootSchema');
-const { getUser } = require('./user/functions');
+} = require('./rootSchema.ts');
+const { getUser } = require('./user/functions.ts');
 
 const configurations = {
   production: { ssl: true, port: 40443 },
