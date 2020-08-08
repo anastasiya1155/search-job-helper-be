@@ -4,10 +4,8 @@
   "description": "",
   "main": "server/index.ts",
   "scripts": {
-    "start": "node --inspect=5858 -r ts-node/register ./server/index.ts",
-    "start:watch": "nodemon",
+    "start": "NODE_ENV=development DB_HOST=localhost nodemon -r ts-node/register ./server/index.ts",
     "build": "tsc",
-    "start:old": "NODE_ENV=development DB_HOST=localhost nodemon server/index.ts",
     "lint": "eslint server",
     "migrate": "sequelize db:migrate --env production",
     "test": "NODE_ENV=testing DB_DATABASE=sjh-test jest --forceExit --runInBand --detectOpenHandles"
@@ -54,7 +52,6 @@
     "watch": [
       "server"
     ],
-    "exec": "npm start",
     "ext": "*"
   }
 }
