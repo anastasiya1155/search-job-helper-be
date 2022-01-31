@@ -34,6 +34,11 @@ const apollo = new ApolloServer({
 });
 
 const app = express();
+
+app.get("/ping", (req, res) => {
+  res.send("Pong!")
+});
+
 apollo.applyMiddleware({ app });
 
 let server;
