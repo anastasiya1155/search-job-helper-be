@@ -37,7 +37,7 @@ const apollo = new ApolloServer({
 const app = express();
 
 app.get("/ping", (req, res) => {
-  console.log(path.resolve('./'));
+  // console.log(path.resolve('./'));
   res.send("Pong!");
 });
 
