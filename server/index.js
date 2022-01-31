@@ -2,6 +2,7 @@ require('dotenv').config();
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const https = require('https');
 const http = require('http');
 const {
@@ -36,6 +37,7 @@ const apollo = new ApolloServer({
 const app = express();
 
 app.get("/ping", (req, res) => {
+  console.log(path.resolve('./'))
   res.send("Pong!");
 });
 
